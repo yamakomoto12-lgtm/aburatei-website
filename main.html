@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>あぶら～亭 桜上水本店 - 公式サイト</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* CSSリセットと基本スタイル */
+        :root {
+            --main-color: #150606; /* エネルギッシュな赤 */
+            --dark-color: #222;    /* 濃いグレー（黒） */
+            --text-color: #333;
+            --bg-color: #db6259;   /* 背景色 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background-color: #fff;
+            scroll-behavior: smooth; /* スクロールを滑らかに */
+        }
+        
+        /* 読み込み時にAOSアニメーションがカクつくのを防ぐ */
+        body.aos-init [data-aos] {
+            visibility: hidden;
+        }
+        body.aos-init.aos-animate [data-aos] {
+            visibility: visible;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            vertical-align: middle;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* 汎用クラス */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 100px 0; /* 余白を少し増やす */
+            overflow-x: hidden; /* 横スクロールバー防止 */
+        }
+
+        .section-title {
+            font-size: 2.8rem; /* 少し大きく */
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 60px; /* 余白を増やす */
+            color: var(--dark-color);
+            line-height: 1.4;
+        }
+
+        /* ヘッダー */
+        .header {
+            width: 100%;
+            padding: 15px 0;
+            background-color: rgba(189, 47, 47, 0.9); /* 少し透明に */
+            border-bottom: 2px solid var(--dark-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(8px); /* すりガラス効果 */
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--main-color);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 700;
+            transition: color 0.3s;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        /* ナビゲーションのホバーエフェクト */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--main-color);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease-out;
+        }
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        .nav-links a:hover {
+            color: var(--main-color);
+        }
+
+        /* ハンバーガーメニュー (スマホ用) */
+        .burger {
+            display: none;
+            cursor: pointer;
+        }
+
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background-color: var(--dark-color);
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        /* ヒーローセクション */
+        .hero {
+            height: 80vh; /* 少し高く */
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('images/kanban.jpg'); /* ※ここは実際の画像パスに差し替えてください */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            
+            /* ヒーローアニメーション */
+            opacity: 0; /* 初期状態は透明 */
+            animation: heroFadeIn 1.5s 0.5s ease-out forwards; /* 0.5秒後から1.5秒かけてフェードイン */
+        }
+        
+        /* ヒーローの背景フェードイン用 */
+        @keyframes heroFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+            
+            /* テキストアニメーション */
+            opacity: 0;
+            transform: translateY(30px);
+            animation: textSlideUp 1.2s 1.5s ease-out forwards; /* 1.5秒後から1.2秒かけてスライドアップ */
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+
+            /* テキストアニメーション */
+            opacity: 0;
+            transform: translateY(30px);
+            animation: textSlideUp 1.2s 1.8s ease-out forwards; /* 1.8秒後から1.2秒かけてスライドアップ */
+        }
+        
+        /* ヒーローのテキスト用 */
+        @keyframes textSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* あいさつ・こだわりセクション */
+        #about {
+            background-color: var(--bg-color);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .about-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+            text-align: center;
+            
+            /* ホバーエフェクト */
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .about-card:hover {
+            transform: translateY(-8px); /* 少し浮き上がる */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* 影を濃く */
+        }
+
+        .about-card h3 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--main-color);
+            margin-bottom: 15px;
+        }
+
+        .about-card p {
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        /* メニューセクション */
+        .menu-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 10px 30px;
+            margin: 5px;
+            border: 2px solid var(--dark-color);
+            border-radius: 30px;
+            cursor: pointer;
+            background-color: #fff;
+            color: var(--dark-color);
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            background-color: var(--dark-color);
+            color: #fff;
+        }
+
+        .menu-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .menu-content.active {
+            display: block;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .menu-item {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+            /* ホバーエフェクト */
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .menu-item:hover {
+            transform: scale(1.03); /* 少し拡大 */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        .menu-item-img {
+            height: 220px;
+            background-color: #eee;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.4s ease-out; /* 拡大時に画像も滑らかに */
+        }
+        
+        /* ホバー時に画像を少しズーム */
+        .menu-item:hover .menu-item-img {
+            transform: scale(1.1);
+        }
+
+        .menu-item-content {
+            padding: 20px;
+        }
+
+        .menu-item-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .menu-item-title span {
+            font-size: 1.2rem;
+            font-family: 'Roboto', sans-serif;
+            color: var(--main-color);
+            font-weight: 700;
+        }
+
+        .menu-item-desc {
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* アクセスセクション */
+        #access {
+            background-color: var(--dark-color);
+            color: #fff;
+        }
+
+        #access .section-title {
+            color: #fff;
+        }
+
+        .access-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .access-info table {
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        .access-info th, .access-info td {
+            padding: 15px 0;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .access-info th {
+            font-weight: 700;
+            width: 100px;
+        }
+        
+        .map-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 3px solid #fff;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* フッター */
+        .footer {
+            padding: 40px 0;
+            background-color: #111;
+            color: #aaa;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 0.9rem;
+        }
+
+        /* レスポンシブ対応 (スマホ) */
+        @media (max-width: 768px) {
+            .section {
+                padding: 60px 0;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+
+            /* スマホ用ヘッダー */
+            .nav-links {
+                position: fixed;
+                right: 0;
+                top: 67px; /* ヘッダーの高さ */
+                background-color: rgba(255, 255, 255, 0.95); /* 透明度とぼかし */
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                width: 70%;
+                height: 100vh;
+                flex-direction: column;
+                align-items: center;
+                transform: translateX(100%);
+                transition: transform 0.5s ease-in;
+                border-left: 1px solid #eee;
+            }
+
+            .nav-links li {
+                margin: 20px 0;
+            }
+            
+            .nav-links.nav-active {
+                transform: translateX(0%);
+            }
+            
+            .burger {
+                display: block;
+            }
+            
+            .toggle .line1 {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            .toggle .line2 {
+                opacity: 0;
+            }
+            .toggle .line3 {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+
+            /* その他セクション */
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .access-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .access-container .map-container {
+                order: -1; /* 地図を上に */
+            }
+        }
+    </style>
+</head>
+
+<body data-aos-easing="ease-out" data-aos-duration="800" data-aos-once="true">
+
+    <header class="header">
+        <div class="container">
+            <a href="#" class="logo">あぶら～亭</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#about">こだわり</a></li>
+                    <li><a href="#menu">おしながき</a></li>
+                    <li><a href="#access">店舗情報</a></li>
+                    <li><a href="https://abu-sakurajousui.stores.jp/" target="_blank">通販サイト</a></li>
+                </ul>
+                <div class="burger">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="hero">
+            <div class="hero-content">
+                <h1>桜上水のソウルフード。</h1>
+                <p>長年愛され続ける、あたたかい一杯を。</p>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">あぶら～亭が
+                    <br>愛され続ける理由</h2>
+                <div class="about-grid">
+                    <div class="about-card" data-aos="fade-up" data-aos-delay="100">
+                        <h3>一、唯一無二の「あぶら～麺」</h3>
+                        <p>
+                            “油そば”と聞いて想像する重たさはありません。
+                            自家製のまろやかなラードと、秘伝の醤油ダレが絡むモチモチの太麺。
+                            香ばしい焦がしネギがアクセントとなり、不思議とまた食べたくなる、中毒性のある一杯です。
+                        </p>
+                    </div>
+                    <div class="about-card" data-aos="fade-up" data-aos-delay="300">
+                        <h3>二、伝説の「チャーハン」</h3>
+                        <p>
+                            「あぶら〜麺」と並ぶ、もう一つの主役。
+                            強火で一気に仕上げることで米はパラパラ、しかし中はしっとり。
+                            ゴロゴロ入ったチャーシューの旨味が全体に広がる、当店自慢の「黄金チャーハン」です。セットでのご注文が定番です。
+                        </p>
+                    </div>
+                    <div class="about-card" data-aos="fade-up" data-aos-delay="500">
+                        <h3>三、活気ある「おもてなし」</h3>
+                        <p>
+                            「いらっしゃいませ！」
+                            店内に響き渡る元気な声と、スタッフの温かい笑顔。
+                            「並んでくれてありがとう」の餃子サービスや、帰り際のお見送り。
+                            お腹だけでなく、心まで満タンになってほしい。それが私達の想いです。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="menu" class="section">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">おしながき</h2>
+                
+                <div class="menu-tabs" data-aos="fade-up" data-aos-delay="100">
+                    <button class="tab-btn active" data-tab="tab1">名物・セット</button>
+                    <button class="tab-btn" data-tab="tab2">麺類</button>
+                    <button class="tab-btn" data-tab="tab3">一品・お飲み物</button>
+                </div>
+
+                <div id="tab1" class="menu-content active">
+                    <div class="menu-grid">
+                        <div class="menu-item" data-aos="fade-up" data-aos-delay="200">
+                            <div class="menu-item-img" style="background-image: url('images/aburamen.jpg');"></div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">あぶら～麺 <span>900円</span></div>
+                                <p class="menu-item-desc">まずはこれ！長年愛される当店の看板メニュー。</p>
+                            </div>
+                        </div>
+                        <div class="menu-item" data-aos="fade-up" data-aos-delay="400">
+                            <div class="menu-item-img" style="background-image: url('images/tya-syu-.jpg');"></div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">チャーシューあぶら～麺 <span>1200円</span></div>
+                                <p class="menu-item-desc">自慢のホロホロチャーシューが丼を覆う、満足度No.1の一杯。</p>
+                            </div>
+                        </div>
+                        <div class="menu-item" data-aos="fade-up" data-aos-delay="200">
+                            <div class="menu-item-img" style="background-image: url('images/abutya.jpg');"></div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">あぶら～麺＋半チャーハン <span>1200円</span></div>
+                                <p class="menu-item-desc">黄金コンビ。「半」とは思えないボリュームが人気です。</p>
+                            </div>
+                        </div>
+                        <div class="menu-item" data-aos="fade-up" data-aos-delay="400">
+                            <div class="menu-item-img" style="background-image: url('images/gyouza.jpg');"></div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">鉄鍋餃子 (5個) <span>500円</span></div>
+                                <p class="menu-item-desc">熱々の鉄鍋でご提供。パリッとした皮とジューシーな餡がたまらない。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab2" class="menu-content">
+                    <div class="menu-grid">
+                        <div class="menu-item" data-aos="fade-up" data-aos-delay="200">
+                            <div class="menu-item-img" style="background-image: url('images/ramen.jpg');"></div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">ラーメン <span>900円</span></div>
+                                <p class="menu-item-desc">昔ながらの鶏ガラ醤油スープ。ホッとするクラシカルな味わい。</p>
+                            </div>
+                        </div>
+                        <div class="menu-item" data-aos="fade-up" data-aos-delay="400">
+                            <div class="menu-item-img" style="background-image: url('images/tsukemen.jpg');"></div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">つけ麺 <span>950円</span></div>
+                                <p class="menu-item-desc">魚介の効いた濃厚スープが、モチモチの麺によく絡みます。</p>
+                            </div>
+                        </div>
+                         <div class="menu-item" data-aos="fade-up" data-aos-delay="200">
+                            <div class="menu-item-img" style="background-image: url('images/chashu-ramen.jpg');"></div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">チャーシューメン <span>1200円</span></div>
+                                <p class="menu-item-desc">ラーメンにも、もちろん自慢のチャーシューを乗せられます。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab3" class="menu-content">
+                    <div class="menu-grid">
+                        <div class="menu-item" data-aos="fade-up" data-aos-delay="200">
+                            <div class="menu-item-img" style="background-image: url('images/chahan.jpg');"></div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">チャーハン <span>860円</span></div>
+                                <p class="menu-item-desc">単品でもどうぞ。あぶら〜亭のもう一つの主役。</p>
+                            </div>
+                        </div>
+                        <div class="menu-item" data-aos="fade-up" data-aos-delay="400">
+                            <div class="menu-item-img" style="background-image: url('images/beer.jpg');"></div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">瓶ビール (中瓶) <span>600円</span></div>
+                                <p class="menu-item-desc">餃子とチャーハンとビール。最高の組み合わせをどうぞ。</p>
+                            </div>
+                        </div>
+                        <div class="menu-item" data-aos="fade-up" data-aos-delay="200">
+                            <div class="menu-item-img" style="background-image: url('images/softdrink.jpg');"></div>
+                            <div class="menu-item-content">
+                                <div class="menu-item-title">ソフトドリンク <span>300円</span></div>
+                                <p class="menu-item-desc">コーラ、ウーロン茶などをご用意しています。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="access" class="section">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">店舗情報</h2>
+                <div class="access-container">
+                    <div class="access-info" data-aos="fade-right">
+                        <table>
+                            <tr>
+                                <th>店名</th>
+                                <td>あぶら～亭 桜上水本店</td>
+                            </tr>
+                            <tr>
+                                <th>住所</th>
+                                <td>東京都杉並区下高井戸1-22-9
+                                    <br><small>（甲州街道沿い）</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>アクセス</th>
+                                <td>京王線「桜上水」駅北口より徒歩2分</td>
+                            </tr>
+                            <tr>
+                                <th>営業時間</th>
+                                <td>11:00 ～ 翌4:00 (L.O. 翌3:30)
+                                    <br><small>※売り切れ次第終了の場合あり</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>定休日</th>
+                                <td>火曜日</td>
+                            </tr>
+                            <tr>
+                                <th>席数</th>
+                                <td>28席（カウンター、テーブル席）</td>
+                            </tr>
+                            <tr>
+                                <th>お支払い</th>
+                                <td>現金のみ</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.730302506248!2d139.624738315259!3d35.68369598019398!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018f27a6f91f759%3A0x6b872b8d0b2f0a8e!2z44GC44G144GM44O7LmNvbSDmjobjgqTkvY_mlbflpJk!5e0!3m2!1sja!2sjp!4v1678888888888!5m2!1sja!2sjp" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 あぶら～亭. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        /* ======== AOSの初期化 ======== */
+        AOS.init();
+
+        /* ======== スマホ用ナビゲーション ======== */
+        const navSlide = () => {
+            const burger = document.querySelector('.burger');
+            const nav = document.querySelector('.nav-links');
+
+            burger.addEventListener('click', () => {
+                // ナビゲーションのトグル
+                nav.classList.toggle('nav-active');
+                
+                // ハンバーガーのトグル
+                burger.classList.toggle('toggle');
+            });
+        }
+        navSlide();
+
+
+        /* ======== メニュータブ機能 ======== */
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.menu-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // すべてのタブとコンテンツから 'active' クラスを削除
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+
+                // クリックされたタブと、対応するコンテンツに 'active' クラスを追加
+                tab.classList.add('active');
+                const targetContent = document.getElementById(tab.dataset.tab);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
